@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Xunit;
 using ProductsApi.Data;
 using ProductsApi.Contexts;
@@ -9,24 +10,32 @@ namespace ProductsApi.Unittests
   public class ProductsRepositoryTests
   {
 
-    private ProductsContext _productsContext { get; set; }
-    private ProductsRepository _productsRepository { get; set; }
-    private MongoDbConfig _mongoDbConfig { get; set; }
+    private IProductsContext _context { get; set; }
 
-    [Fact]
-    public async void GetAllProductsTest_NotEmptyList()
+    public ProductsRepositoryTests()
     {
-      this._mongoDbConfig = new MongoDbConfig();
-      this._mongoDbConfig.Database = "ProductsDb";
-      this._mongoDbConfig.Host = "localhost";
-      this._mongoDbConfig.Port = 27018;
-      this._mongoDbConfig.User = "root";
-      this._mongoDbConfig.Password = "example";
+      var config = new ServerConfig();
 
-      this._productsContext = new ProductsContext(this._mongoDbConfig);
-      this._productsRepository = new ProductsRepository(this._productsContext);
-      var result = await this._productsRepository.GetAllProducts();
+      config.MongoDb.Database = "products_Db";
+      config.MongoDb.Host = "localhost";
+      config.MongoDb.Port = 27018;
+      config.MongoDb.User = "root";
+      config.MongoDb.Password = "example";
+      this._context = new ProductsContext(config.MongoDb);
+    }
+
+    [Fact, Trait("Priority", "1"), Trait("Category", "IntegrationTests")]
+    public async Task GetAllProductsTest_NotNullOrEmptyList()
+    {
+      ProductsRepository pr = new ProductsRepository(this._context);
+      var result = await pr.GetAllProducts();
+      foreach (var item in result)
+      {
+        System.Console.WriteLine(item.product_name);
+      }
+      System.Console.WriteLine();
       Assert.NotEmpty(result);
+      Assert.NotNull(result);
     }
   }
 }
