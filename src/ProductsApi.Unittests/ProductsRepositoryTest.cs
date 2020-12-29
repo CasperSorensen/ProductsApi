@@ -24,18 +24,18 @@ namespace ProductsApi.Unittests
       this._context = new ProductsContext(config.MongoDb);
     }
 
-    [Fact, Trait("Priority", "1"), Trait("Category", "IntegrationTests")]
-    public async Task GetAllProductsTest_NotNullOrEmptyList()
-    {
-      ProductsRepository pr = new ProductsRepository(this._context);
-      var result = await pr.GetAllProducts();
-      foreach (var item in result)
-      {
-        System.Console.WriteLine(item.product_name);
-      }
-      System.Console.WriteLine();
-      Assert.NotEmpty(result);
-      Assert.NotNull(result);
-    }
+    // [Fact, Trait("Priority", "1"), Trait("Category", "IntegrationTests")]
+    // public async Task GetAllProductsTest_NotNullOrEmptyList()
+    // {
+    //   ProductsRepository pr = new ProductsRepository(this._context);
+    //   var result = await pr.GetAllProducts();
+    //   foreach (var item in result)
+    //   {
+    //     System.Console.WriteLine(item.product_name);
+    //   }
+    //   System.Console.WriteLine();
+    //   Assert.NotEmpty(result);
+    //   Assert.NotNull(result);
+    // }
   }
 }
