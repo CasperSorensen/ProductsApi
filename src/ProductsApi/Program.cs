@@ -16,6 +16,7 @@ namespace ProductsApi
       var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
       var configuration = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+          .AddJsonFile("appsettings.Production.json", optional: false, reloadOnChange: true)
           .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
           .Build();
 
@@ -29,6 +30,7 @@ namespace ProductsApi
               webBuilder.UseStartup<Startup>();
             }).ConfigureAppConfiguration(configuration =>
             {
+              configuration.AddJsonFile("appsettings.Production.json", optional: false, reloadOnChange: true);
               configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
               configuration.AddJsonFile(
               $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true);
